@@ -1,0 +1,48 @@
+name: tic-tac-toe-project
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - tic-tac-toe-project/**
+  workflow_dispatch:
+
+jobs:
+  pull-request:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: tic-tac-toe-project
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Setup Nodejs
+      - name: Setup Node.js 16
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: tic-tac-toe-project/yarn.lock
+
+      # Install Yarn
+      - name: Install Yarn
+        run: npm install --global yarn
+
+      # Install libraries
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      # Compile the code
+      - name: Build project
+        run: yarn build
+
+      - uses: manleydev/butler-publish-itchio-action@v1.0.3
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.ITHC_API_KEY }}
+          CHANNEL: windows
+          ITCH_GAME: githubactions-testgame
+          ITCH_USER: amgadelfiky
+          PACKAGE: tic-tac-toe-project/dist
