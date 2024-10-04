@@ -39,10 +39,10 @@ jobs:
       - name: Build project
         run: yarn build
 
-      - uses: manleydev/butler-publish-itchio-action@v1.0.3
+      - uses: yeslayla/butler-publish-itchio-action@v1.0.3
         env:
           BUTLER_CREDENTIALS: ${{ secrets.ITHC_API_KEY }}
-          CHANNEL: windows
+          CHANNEL: HTML
           ITCH_GAME: githubactions-testgame
           ITCH_USER: amgadelfiky
           PACKAGE: tic-tac-toe-project/dist
